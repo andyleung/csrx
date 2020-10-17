@@ -1,0 +1,200 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: csrx4
+  labels:
+    app: csrx4
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: csrx4
+  template:
+    metadata:
+      name: csrx4
+      labels:
+        app: csrx4
+      annotations:
+        k8s.v1.cni.cncf.io/networks: br-411@eth1, br-421@eth2
+    spec:      
+      containers:
+      - name: csrx4
+        securityContext:
+           privileged: true
+        image: localhost:5000/csrx-20.4-20200803.1557_dev_common
+        env:
+        - name: CSRX_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: rootpwdsecret
+              key: password
+        - name: CSRX_SIZE
+          value: "large"
+        - name: CSRX_HUGEPAGES
+          value: "no"
+        - name: CSRX_PACKET_DRIVER
+          value: "interrupt"
+        - name: CSRX_FORWARD_MODE
+          value: "routing"
+        - name: CSRX_AUTO_ASSIGN_IP
+          value: "yes"
+        - name: CSRX_MGMT_PORT_REORDER
+          value: "no"
+        - name: CSRX_TCP_CKSUM_CALC
+          value: "yes"
+        - name: CSRX_LICENSE_FILE
+          value: "/var/jail/.csrx_license"
+        - name: CSRX_JUNOS_CONFIG
+          value: "/var/jail/csrx_config"
+        volumeMounts:
+        - name: disk
+          mountPath: "/dev"
+        - name: config
+          mountPath: "/var/jail"
+      volumes:
+      - name: disk
+        hostPath:
+          path: /dev
+          type: Directory
+      - name: config
+        configMap:
+          name: cm-csrx4
+          items:
+          - key: csrx_config
+            path: csrx_config
+          - key: csrx_license
+            path: .csrx_license
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: csrx41
+  labels:
+    app: csrx41
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: csrx41
+  template:
+    metadata:
+      name: csrx41
+      labels:
+        app: csrx41
+      annotations:
+        k8s.v1.cni.cncf.io/networks: br-412@eth1, br-431@eth2
+    spec:
+      containers:
+      - name: csrx41
+        securityContext:
+           privileged: true
+        image: localhost:5000/csrx-20.4-20200803.1557_dev_common
+        env:
+        - name: CSRX_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: rootpwdsecret
+              key: password
+        - name: CSRX_SIZE
+          value: "large"
+        - name: CSRX_HUGEPAGES
+          value: "no"
+        - name: CSRX_PACKET_DRIVER
+          value: "interrupt"
+        - name: CSRX_FORWARD_MODE
+          value: "routing"
+        - name: CSRX_AUTO_ASSIGN_IP
+          value: "yes"
+        - name: CSRX_MGMT_PORT_REORDER
+          value: "no"
+        - name: CSRX_TCP_CKSUM_CALC
+          value: "yes"
+        - name: CSRX_LICENSE_FILE
+          value: "/var/jail/.csrx_license"
+        - name: CSRX_JUNOS_CONFIG
+          value: "/var/jail/csrx_config"
+        volumeMounts:
+        - name: disk
+          mountPath: "/dev"
+        - name: config
+          mountPath: "/var/jail"
+      volumes:
+      - name: disk
+        hostPath:
+          path: /dev
+          type: Directory
+      - name: config
+        configMap:
+          name: cm-csrx4
+          items:
+          - key: csrx_config
+            path: csrx_config
+          - key: csrx_license
+            path: .csrx_license
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: csrx42
+  labels:
+    app: csrx42
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: csrx42
+  template:
+    metadata:
+      name: csrx42
+      labels:
+        app: csrx42
+      annotations:
+        k8s.v1.cni.cncf.io/networks: br-422@eth1, br-432@eth2
+    spec:
+      containers:
+      - name: csrx42
+        securityContext:
+           privileged: true
+        image: localhost:5000/csrx-20.4-20200803.1557_dev_common
+        env:
+        - name: CSRX_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: rootpwdsecret
+              key: password
+        - name: CSRX_SIZE
+          value: "large"
+        - name: CSRX_HUGEPAGES
+          value: "no"
+        - name: CSRX_PACKET_DRIVER
+          value: "interrupt"
+        - name: CSRX_FORWARD_MODE
+          value: "routing"
+        - name: CSRX_AUTO_ASSIGN_IP
+          value: "yes"
+        - name: CSRX_MGMT_PORT_REORDER
+          value: "no"
+        - name: CSRX_TCP_CKSUM_CALC
+          value: "yes"
+        - name: CSRX_LICENSE_FILE
+          value: "/var/jail/.csrx_license"
+        - name: CSRX_JUNOS_CONFIG
+          value: "/var/jail/csrx_config"
+        volumeMounts:
+        - name: disk
+          mountPath: "/dev"
+        - name: config
+          mountPath: "/var/jail"
+      volumes:
+      - name: disk
+        hostPath:
+          path: /dev
+          type: Directory
+      - name: config
+        configMap:
+          name: cm-csrx4
+          items:
+          - key: csrx_config
+            path: csrx_config
+          - key: csrx_license
+            path: .csrx_license

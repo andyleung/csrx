@@ -1,0 +1,55 @@
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: br-11
+spec:
+  config: '{
+      "cniVersion": "0.3.0",
+      "type": "bridge",
+      "bridge": "br-11",
+      "promiscMode": true,
+      "ipam": {
+          "type": "host-local",
+          "ranges": [
+              [
+                 {
+                     "subnet": "11.0.0.0/24",
+                     "rangeStart": "11.0.0.5",
+                     "rangeEnd": "11.0.0.15"
+                 }
+              ]
+         ],
+        "routes": [
+                        { "dst": "0.0.0.0/0" }
+                ]
+      }
+    }'
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: br-12
+spec:
+  config: '{
+      "cniVersion": "0.3.0",
+      "type": "bridge",
+      "bridge": "br-12",
+      "promiscMode": true,
+      "ipam": {
+          "type": "host-local",
+          "ranges": [
+              [
+                 {
+                     "subnet": "12.0.0.0/24",
+                     "rangeStart": "12.0.0.5",
+                     "rangeEnd": "12.0.0.15"
+                 }
+              ]
+         ],
+                "routes": [
+                        { "dst": "0.0.0.0/0" }
+                ]
+      }
+    }'
+---

@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: csrx6
+  labels:
+    app: csrx6
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: csrx6
+  template:
+    metadata:
+      name: csrx6
+      labels:
+        app: csrx6
+      annotations:
+        k8s.v1.cni.cncf.io/networks: br-151@eth1, br-152@eth2, br-153@eth3, br-154@eth4, br-155@eth5, br-156@eth6, br-157@eth7, br-158@eth8, br-159@eth9, br-160@eth10, br-161@eth11, br-162@eth12, br-163@eth13, br-164@eth14, br-165@eth15, br-166@eth16
+    spec:
+      containers:
+      - name: csrx6
+        securityContext:
+           privileged: true
+        image: localhost:5000/csrx-20.4-20200803.1557_dev_common
+        env:
+        - name: CSRX_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: rootpwdsecret
+              key: password
+        - name: CSRX_PORT_NUM
+          value: "17"
+        - name: CSRX_SIZE
+          value: "large"
+        - name: CSRX_HUGEPAGES
+          value: "no"
+        - name: CSRX_PACKET_DRIVER
+          value: "interrupt"
+        - name: CSRX_AUTO_ASSIGN_IP
+          value: "yes"
+        - name: CSRX_MGMT_PORT_REORDER
+          value: "no"
+        - name: CSRX_TCP_CKSUM_CALC
+          value: "yes"
+        - name: CSRX_LICENSE_FILE
+          value: "/var/jail/.csrx_license"
+        - name: CSRX_JUNOS_CONFIG
+          value: "/var/jail/csrx_config"
+        - name: CSRX_FORWARD_MODE
+          value: "routing"
+        volumeMounts:
+        - name: config
+          mountPath: "/var/jail"
+        - name: disk
+          mountPath: "/dev"
+        - name: varlogs
+          mountPath: "/var/log"
+        - name: varcrash
+          mountPath: "/var/crash"
+      volumes:
+      - name: config
+        configMap:
+          name: cm-csrx6
+          items:
+          - key: csrx_config
+            path: csrx_config
+          - key: csrx_license
+            path: .csrx_license
+      - name: disk
+        hostPath:
+          path: /dev
+          type: Directory
+      - name: varlogs
+        hostPath:
+          path: /tmp/csrxlog
+      - name: varcrash
+        hostPath:
+          path: /tmp/csrxcrash

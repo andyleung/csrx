@@ -1,0 +1,1 @@
+kubectl scale deploy csrx5 --replicas=3

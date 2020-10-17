@@ -1,0 +1,91 @@
+### install docker+kubeadm on master node
+### install kubeadm on each worker nodes
+#### install docker runtime
+sudo -i
+apt-get update && apt-get install -y \
+  apt-transport-https ca-certificates curl software-properties-common gnupg2
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+
+add-apt-repository \
+  "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) \
+  stable"
+
+apt-get update && apt-get install -y \
+  containerd.io=1.2.10-3 \
+  docker-ce=5:19.03.4~3-0~ubuntu-$(lsb_release -cs) \
+  docker-ce-cli=5:19.03.4~3-0~ubuntu-$(lsb_release -cs)
+
+#### change docker to user systemd instead of cgroupfs
+docker info | grep -i cgroup
+cat > /etc/docker/daemon.json <<EOF
+{
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2"
+}
+EOF
+mkdir -p /etc/systemd/system/docker.service.d
+systemctl daemon-reload
+systemctl restart docker
+docker info | grep -i cgroup
+
+#### install kubeadm if docker has installed already
+sudo apt-get update && sudo apt-get install -y apt-transport-https curl
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+
+### master nodes
+####kubeadm config images pull (optional)
+#kubeadm init --apiserver-advertise-address=192.168.7.11
+#### kubadm init (if using flannel)
+kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=192.168.7.11 
+
+mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+
+#### master node install network plugin weave
+#kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | #tr -d '\n')"
+### master node install network plugin flannel
+#### be sure to add --pod-network-cidr=10.244.0.0/16 when run kubeadm init
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/2140ac876ef134e0ed5af15c65e414cf26827915/Documentation/kube-flannel.yml
+
+### add route to api-server svc on worker node if needs
+c1-worker-1: 
+ip route add 10.96.0.1/32 dev enp0s8 src 192.168.7.21
+c1-worker-2: 
+ip route add 10.96.0.1/32 dev enp0s8 src 192.168.7.22
+
+### worker nodes join
+kubeadm join 192.168.6.11:6443 --token kyd9sx.94wyt7vowrb1ixby \
+    --discovery-token-ca-cert-hash sha256:64e0e7a1be715053e8b25186d32cdb888325e469bd8fe6cdeee19f6026c75246
+
+### worker nodes get kubeconfig ready
+mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/kubelet.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+
+### multus installation
+git clone https://github.com/intel/multus-cni
+root@c1-master-1:~# cd multus-cni/
+root@c1-master-1:~/multus-cni# cd images/
+root@c1-master-1:~/multus-cni/images# ka -f multus-daemonset.yml
+
+### something for troubleshooting
+kubeadm reset
+check kube-system pods status and logs
+kubectl get componentstatuses
+kubectl get nodes
+kubectl get svc

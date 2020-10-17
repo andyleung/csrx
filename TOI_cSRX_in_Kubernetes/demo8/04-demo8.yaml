@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: csrx5
+  labels:
+    app: csrx5
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: csrx5
+  template:
+    metadata:
+      name: csrx5
+      labels:
+        app: csrx5
+      annotations:
+        k8s.v1.cni.cncf.io/networks: br-51@eth1, br-52@eth2
+    spec:      
+      containers:
+      - name: csrx5
+        securityContext:
+           privileged: true
+        image: localhost:5000/csrx-20.4-20200803.1557_dev_common
+        ports:
+          - containerPort: 80
+        readinessProbe:
+          httpGet:
+            port: 80
+            path: /
+          initialDelaySeconds: 1
+          periodSeconds: 2
+          timeoutSeconds: 4
+          successThreshold: 2
+          failureThreshold: 3
+        env:
+        - name: CSRX_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: rootpwdsecret
+              key: password
+        - name: CSRX_SIZE
+          value: "large"
+        - name: CSRX_HUGEPAGES
+          value: "no"
+        - name: CSRX_PACKET_DRIVER
+          value: "interrupt"
+        - name: CSRX_FORWARD_MODE
+          value: "routing"
+        - name: CSRX_AUTO_ASSIGN_IP
+          value: "yes"
+        - name: CSRX_MGMT_PORT_REORDER
+          value: "yes"
+        - name: CSRX_TCP_CKSUM_CALC
+          value: "yes"
+        - name: CSRX_LICENSE_FILE
+          value: "/var/jail/.csrx_license"
+        - name: CSRX_JUNOS_CONFIG
+          value: "/var/jail/csrx_config"
+        volumeMounts:
+        - name: disk
+          mountPath: "/dev"
+        - name: config
+          mountPath: "/var/jail"
+      volumes:
+      - name: disk
+        hostPath:
+          path: /dev
+          type: Directory
+      - name: config
+        configMap:
+          name: cm-csrx5
+          items:
+          - key: csrx_config
+            path: csrx_config
+          - key: csrx_license
+            path: .csrx_license
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: csrx5
+  name: csrx5
+spec:
+  selector:
+      app: csrx5
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

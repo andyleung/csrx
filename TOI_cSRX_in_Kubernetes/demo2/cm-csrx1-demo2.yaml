@@ -1,0 +1,17 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: cm-csrx1
+data:
+  csrx_config: |
+    system {
+      license {
+        network-server {
+            address {
+                10.157.64.160;
+            }
+        }
+        network-mode;
+      }
+    }
+---

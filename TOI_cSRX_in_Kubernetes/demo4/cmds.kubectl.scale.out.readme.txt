@@ -1,0 +1,5 @@
+k scale deploy csrx2 --replicas=4
+k set image deployment/csrx2 csrx2=localhost:5000/csrx-20.4-20200730.0309_dev_common --record
+k rollout status deploy/csrx2
+k rollout history deploy/csrx2
+k rollout undo deploy/csrx2

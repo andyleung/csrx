@@ -1,0 +1,4 @@
+k expose deployment/csrx2 --port=22 --target-port=22 --type=NodePort
+ssh -p <port> <svc_ip>
+ssh -p <target-port> <ep_ip>
+ssh -p <NodePort> <NodeIP>

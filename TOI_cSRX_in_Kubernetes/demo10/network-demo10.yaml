@@ -1,0 +1,432 @@
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: br-151
+spec:
+  config: '{
+      "cniVersion": "0.3.0",
+      "type": "bridge",
+      "bridge": "br-16",
+      "promiscMode": true,
+      "ipam": {
+          "type": "host-local",
+          "ranges": [
+              [
+                 {
+                     "subnet": "55.151.1.0/16",
+                     "rangeStart": "55.151.1.1",
+                     "rangeEnd": "55.151.1.10"
+                 }
+              ]
+         ],
+        "routes": [
+                        { "dst": "0.0.0.0/0" }
+                ]
+      }
+    }'
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: br-152
+spec:
+  config: '{
+      "cniVersion": "0.3.0",
+      "type": "bridge",
+      "bridge": "br-16",
+      "promiscMode": true,
+      "ipam": {
+          "type": "host-local",
+          "ranges": [
+              [
+                 {
+                     "subnet": "55.152.2.0/16",
+                     "rangeStart": "55.152.2.2",
+                     "rangeEnd": "55.152.2.20"
+                 }
+              ]
+         ],
+        "routes": [
+                        { "dst": "0.0.0.0/0" }
+                ]
+      }
+    }'
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: br-153
+spec:
+  config: '{
+      "cniVersion": "0.3.0",
+      "type": "bridge",
+      "bridge": "br-16",
+      "promiscMode": true,
+      "ipam": {
+          "type": "host-local",
+          "ranges": [
+              [
+                 {
+                     "subnet": "55.153.2.0/16",
+                     "rangeStart": "55.153.3.3",
+                     "rangeEnd": "55.153.3.20"
+                 }
+              ]
+         ],
+        "routes": [
+                        { "dst": "0.0.0.0/0" }
+                ]
+      }
+    }'
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: br-154
+spec:
+  config: '{
+      "cniVersion": "0.3.0",
+      "type": "bridge",
+      "bridge": "br-16",
+      "promiscMode": true,
+      "ipam": {
+          "type": "host-local",
+          "ranges": [
+              [
+                 {
+                     "subnet": "55.154.1.0/16",
+                     "rangeStart": "55.154.1.1",
+                     "rangeEnd": "55.154.1.10"
+                 }
+              ]
+         ],
+        "routes": [
+                        { "dst": "0.0.0.0/0" }
+                ]
+      }
+    }'
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: br-155
+spec:
+  config: '{
+      "cniVersion": "0.3.0",
+      "type": "bridge",
+      "bridge": "br-16",
+      "promiscMode": true,
+      "ipam": {
+          "type": "host-local",
+          "ranges": [
+              [
+                 {
+                     "subnet": "55.155.1.0/16",
+                     "rangeStart": "55.155.1.1",
+                     "rangeEnd": "55.155.1.10"
+                 }
+              ]
+         ],
+        "routes": [
+                        { "dst": "0.0.0.0/0" }
+                ]
+      }
+    }'
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: br-156
+spec:
+  config: '{
+      "cniVersion": "0.3.0",
+      "type": "bridge",
+      "bridge": "br-16",
+      "promiscMode": true,
+      "ipam": {
+          "type": "host-local",
+          "ranges": [
+              [
+                 {
+                     "subnet": "55.156.1.0/16",
+                     "rangeStart": "55.156.1.1",
+                     "rangeEnd": "55.156.1.10"
+                 }
+              ]
+         ],
+        "routes": [
+                        { "dst": "0.0.0.0/0" }
+                ]
+      }
+    }'
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: br-157
+spec:
+  config: '{
+      "cniVersion": "0.3.0",
+      "type": "bridge",
+      "bridge": "br-16",
+      "promiscMode": true,
+      "ipam": {
+          "type": "host-local",
+          "ranges": [
+              [
+                 {
+                     "subnet": "55.157.1.0/16",
+                     "rangeStart": "55.157.1.1",
+                     "rangeEnd": "55.157.1.10"
+                 }
+              ]
+         ],
+        "routes": [
+                        { "dst": "0.0.0.0/0" }
+                ]
+      }
+    }'
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: br-158
+spec:
+  config: '{
+      "cniVersion": "0.3.0",
+      "type": "bridge",
+      "bridge": "br-16",
+      "promiscMode": true,
+      "ipam": {
+          "type": "host-local",
+          "ranges": [
+              [
+                 {
+                     "subnet": "55.158.1.0/16",
+                     "rangeStart": "55.158.1.1",
+                     "rangeEnd": "55.158.1.10"
+                 }
+              ]
+         ],
+        "routes": [
+                        { "dst": "0.0.0.0/0" }
+                ]
+      }
+    }'
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: br-159
+spec:
+  config: '{
+      "cniVersion": "0.3.0",
+      "type": "bridge",
+      "bridge": "br-16",
+      "promiscMode": true,
+      "ipam": {
+          "type": "host-local",
+          "ranges": [
+              [
+                 {
+                     "subnet": "55.159.1.0/16",
+                     "rangeStart": "55.159.1.1",
+                     "rangeEnd": "55.159.1.10"
+                 }
+              ]
+         ],
+        "routes": [
+                        { "dst": "0.0.0.0/0" }
+                ]
+      }
+    }'
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: br-160
+spec:
+  config: '{
+      "cniVersion": "0.3.0",
+      "type": "bridge",
+      "bridge": "br-16",
+      "promiscMode": true,
+      "ipam": {
+          "type": "host-local",
+          "ranges": [
+              [
+                 {
+                     "subnet": "55.160.1.0/16",
+                     "rangeStart": "55.160.1.1",
+                     "rangeEnd": "55.160.1.10"
+                 }
+              ]
+         ],
+        "routes": [
+                        { "dst": "0.0.0.0/0" }
+                ]
+      }
+    }'
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: br-161
+spec:
+  config: '{
+      "cniVersion": "0.3.0",
+      "type": "bridge",
+      "bridge": "br-16",
+      "promiscMode": true,
+      "ipam": {
+          "type": "host-local",
+          "ranges": [
+              [
+                 {
+                     "subnet": "55.161.1.0/16",
+                     "rangeStart": "55.161.1.1",
+                     "rangeEnd": "55.161.1.10"
+                 }
+              ]
+         ],
+        "routes": [
+                        { "dst": "0.0.0.0/0" }
+                ]
+      }
+    }'
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: br-162
+spec:
+  config: '{
+      "cniVersion": "0.3.0",
+      "type": "bridge",
+      "bridge": "br-16",
+      "promiscMode": true,
+      "ipam": {
+          "type": "host-local",
+          "ranges": [
+              [
+                 {
+                     "subnet": "55.162.1.0/16",
+                     "rangeStart": "55.162.1.1",
+                     "rangeEnd": "55.162.1.10"
+                 }
+              ]
+         ],
+        "routes": [
+                        { "dst": "0.0.0.0/0" }
+                ]
+      }
+    }'
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: br-163
+spec:
+  config: '{
+      "cniVersion": "0.3.0",
+      "type": "bridge",
+      "bridge": "br-16",
+      "promiscMode": true,
+      "ipam": {
+          "type": "host-local",
+          "ranges": [
+              [
+                 {
+                     "subnet": "55.163.1.0/16",
+                     "rangeStart": "55.163.1.1",
+                     "rangeEnd": "55.163.1.10"
+                 }
+              ]
+         ],
+        "routes": [
+                        { "dst": "0.0.0.0/0" }
+                ]
+      }
+    }'
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: br-164
+spec:
+  config: '{
+      "cniVersion": "0.3.0",
+      "type": "bridge",
+      "bridge": "br-16",
+      "promiscMode": true,
+      "ipam": {
+          "type": "host-local",
+          "ranges": [
+              [
+                 {
+                     "subnet": "55.164.1.0/16",
+                     "rangeStart": "55.164.1.1",
+                     "rangeEnd": "55.164.1.10"
+                 }
+              ]
+         ],
+        "routes": [
+                        { "dst": "0.0.0.0/0" }
+                ]
+      }
+    }'
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: br-165
+spec:
+  config: '{
+      "cniVersion": "0.3.0",
+      "type": "bridge",
+      "bridge": "br-16",
+      "promiscMode": true,
+      "ipam": {
+          "type": "host-local",
+          "ranges": [
+              [
+                 {
+                     "subnet": "55.165.1.0/16",
+                     "rangeStart": "55.165.1.1",
+                     "rangeEnd": "55.165.1.10"
+                 }
+              ]
+         ],
+        "routes": [
+                        { "dst": "0.0.0.0/0" }
+                ]
+      }
+    }'
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: br-166
+spec:
+  config: '{
+      "cniVersion": "0.3.0",
+      "type": "bridge",
+      "bridge": "br-16",
+      "promiscMode": true,
+      "ipam": {
+          "type": "host-local",
+          "ranges": [
+              [
+                 {
+                     "subnet": "55.166.1.0/16",
+                     "rangeStart": "55.166.1.1",
+                     "rangeEnd": "55.166.1.10"
+                 }
+              ]
+         ],
+        "routes": [
+                        { "dst": "0.0.0.0/0" }
+                ]
+      }
+    }'
