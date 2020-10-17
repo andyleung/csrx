@@ -1,0 +1,80 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: srv-pod-1
+  annotations:
+    k8s.v1.cni.cncf.io/networks: network-conf-1@eth1
+spec:
+  containers:
+  - name: srv-pod-1
+    securityContext:
+      privileged: true
+    image: manasasuresh/ubuntu-wget-nginx:latest 
+    imagePullPolicy: IfNotPresent
+    command: ["sleep", "9999999"]
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: csrx
+  annotations:
+    k8s.v1.cni.cncf.io/networks: network-conf-1-1@eth1,network-conf-2-1@eth2
+spec:
+  containers:
+  - name: csrx
+    securityContext:
+       privileged: true
+    image: andyleung/csrx:20.3R1.8
+    imagePullPolicy: IfNotPresent
+    env:
+    - name: CSRX_ROOT_PASSWORD
+      value: "lab123"
+    - name: CSRX_SIZE
+      value: "large"
+    - name: CSRX_HUGEPAGES
+      value: "no"
+    - name: CSRX_PACKET_DRIVER
+      value: "interrupt"
+    - name: CSRX_AUTO_ASSIGN_IP
+      value: "yes"
+    - name: CSRX_FORWARD_MODE
+      value: "routing"
+    - name: CSRX_LICENSE_FILE
+      value: "/var/jail/.csrx_license"
+    - name: CSRX_JUNOS_CONFIG
+      value: "var/jail/csrx_config"
+    volumeMounts:
+    - name: config
+      mountPath: "/var/jail"
+    - name: disk
+      mountPath: "/dev"
+  volumes:
+  - name: config
+    configMap:
+      name: csrx-config-map
+      items:
+      - key: csrx_config
+        path: csrx_config
+      - key: csrx_license
+        path: .csrx_license
+  - name: disk
+    hostPath:
+     path: /dev
+     type: Directory
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: srv-pod-2
+  annotations:
+    k8s.v1.cni.cncf.io/networks: network-conf-2@eth1
+spec:
+  containers:
+  - name: srv-pod-2
+    image: manasasuresh/ubuntu-wget-nginx:latest
+    imagePullPolicy: IfNotPresent 
+    command: ["sleep", "9999999"] 
+
