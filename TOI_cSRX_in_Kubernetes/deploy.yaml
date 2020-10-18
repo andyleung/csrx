@@ -15,7 +15,7 @@ spec:
       labels:
         app: csrx
       annotations:
-        k8s.v1.cni.cncf.io/networks: nw2-1@eth1, nw2-2@eth2
+        k8s.v1.cni.cncf.io/networks: nw-1@eth1, nw-2@eth2
     spec:
       containers:
       - name: csrx

@@ -25,3 +25,31 @@ spec:
       }
     }'
 ---
+
+    apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: nw-1
+spec:
+  config: '{
+      "cniVersion": "0.3.0",
+      "type": "bridge",
+      "bridge": "nwbr-1",
+      "promiscMode": true,
+      "ipam": {
+          "type": "host-local",
+          "ranges": [
+              [
+                 {
+                     "subnet": "55.0.0.0/16",
+                     "rangeStart": "55.0.0.11",
+                     "rangeEnd": "55.0.0.20"
+                 }
+              ]
+         ],
+                "routes": [
+                        { "dst": "0.0.0.0/0" }
+                ]
+      }
+    }'
+---
