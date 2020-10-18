@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: csrx
+  labels:
+    app: csrx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: csrx
+  template:
+    metadata:
+      name: csrx
+      labels:
+        app: csrx
+      annotations:
+        k8s.v1.cni.cncf.io/networks: nw2-1@eth1, nw2-2@eth2
+    spec:
+      containers:
+      - name: csrx
+        image: andyleung/csrx:20.3R1.8
+        securityContext:
+           privileged: true
+        ports:
+          - containerPort: 80
+        readinessProbe:
+          httpGet:
+            port: 80
+            path: /
+          initialDelaySeconds: 1
+          periodSeconds: 2
+          timeoutSeconds: 4
+          successThreshold: 2
+          failureThreshold: 3
+        env:
+        - name: CSRX_ROOT_PASSWORD
+          value: "lab123"
+        - name: CSRX_SIZE
+          value: "large"
+        - name: CSRX_HUGEPAGES
+          value: "no"
+        - name: CSRX_PACKET_DRIVER
+          value: "interrupt"
+        - name: CSRX_AUTO_ASSIGN_IP
+          value: "yes"
+        - name: CSRX_MGMT_PORT_REORDER
+          value: "yes"
+        - name: CSRX_TCP_CKSUM_CALC
+          value: "yes"
+        - name: CSRX_LICENSE_FILE
+          value: "/var/jail/.csrx_license"
+        - name: CSRX_JUNOS_CONFIG
+          value: "/var/jail/csrx_config"
+        - name: CSRX_FORWARD_MODE
+          value: "routing"
+        volumeMounts:
+        - name: config
+          mountPath: "/var/jail"
+        - name: disk
+          mountPath: "/dev"
+      volumes:
+      - name: config
+        configMap:
+          name: csrx-config-map
+          items:
+          - key: csrx_config
+            path: csrx_config
+          - key: csrx_license
+            path: .csrx_license
+      - name: disk
+        hostPath:
+          path: /dev
+          type: Directory
+      imagePullSecrets:
+      - name: baas-artifactory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: csrx
+  name: csrx
+spec:
+  selector:
+      app: csrx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
